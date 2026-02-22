@@ -19,3 +19,9 @@ services:
     volumes:
       - ./logs:/app/logs
     restart: unless-stopped
+    networks:
+      - portability_net
+networks:
+  portability_net:
+    external: true
+    name: portability_prod
