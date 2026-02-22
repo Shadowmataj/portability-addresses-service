@@ -79,15 +79,10 @@ eureka:
 # SpringDoc OpenAPI Configuration
 springdoc:
   api-docs:
-    enabled: true
-    path: /api-docs
+    enabled: false
   swagger-ui:
-    enabled: true
-    path: /swagger-ui.html
-    operationsSorter: method
-    tagsSorter: alpha
-  show-actuator: false
-
+    enabled: false
+    
 # Envia API Configuration
 envia:
   api:
