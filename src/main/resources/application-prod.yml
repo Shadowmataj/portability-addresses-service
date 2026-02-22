@@ -66,6 +66,16 @@ logging:
     console: '%d{yyyy-MM-dd HH:mm:ss} - %logger{36} - %msg%n'
     file: '%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n'
 
+# Eureka Client Configuration
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE}
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+
 # SpringDoc OpenAPI Configuration
 springdoc:
   api-docs:
