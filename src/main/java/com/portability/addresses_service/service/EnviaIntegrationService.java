@@ -139,8 +139,7 @@ public class EnviaIntegrationService {
 
                 RequestBody requestBody = RequestBody.create(
                         objectMapper.writeValueAsString(enviaApiRequest),
-                        okhttp3.MediaType.parse("application/json")
-                );
+                        okhttp3.MediaType.parse("application/json"));
 
                 Request quoteRequest = new Request.Builder()
                         .url(enviaConfig.getUrlShip() + "rate")
@@ -226,8 +225,7 @@ public class EnviaIntegrationService {
         try {
             RequestBody requestBody = RequestBody.create(
                     objectMapper.writeValueAsString(enviaApiRequest),
-                    okhttp3.MediaType.parse("application/json")
-            );
+                    okhttp3.MediaType.parse("application/json"));
 
             Request request = new Request.Builder()
                     .url(enviaConfig.getUrlShip() + "generate")
@@ -252,7 +250,7 @@ public class EnviaIntegrationService {
                 }
             }
 
-            JsonNode labelDataNode = root.path("data");
+            JsonNode labelDataNode = root.path("data").get(0);
 
             EnviaLabel enviaLabel = EnviaLabel.builder()
                     .orderId(orderId)
@@ -263,7 +261,8 @@ public class EnviaIntegrationService {
                     .trackUrl(labelDataNode.path("trackUrl").asText())
                     .label(labelDataNode.path("label").asText())
                     .additionalFiles(objectMapper.convertValue(
-                            labelDataNode.path("additionalFiles"), objectMapper.getTypeFactory().constructCollectionType(List.class, String.class)))
+                            labelDataNode.path("additionalFiles"),
+                            objectMapper.getTypeFactory().constructCollectionType(List.class, String.class)))
                     .totalPrice(labelDataNode.path("totalPrice").asDouble())
                     .currentBalance(labelDataNode.path("currentBalance").asText())
                     .currency(labelDataNode.path("currency").asText())
@@ -289,14 +288,12 @@ public class EnviaIntegrationService {
 
         EnviaCancelRequest cancelRequest = new EnviaCancelRequest(
                 existingLabel.getCarrier(),
-                existingLabel.getTrackingNumber()
-        );
+                existingLabel.getTrackingNumber());
 
         try {
             RequestBody requestBody = RequestBody.create(
                     objectMapper.writeValueAsString(cancelRequest),
-                    okhttp3.MediaType.parse("application/json")
-            );
+                    okhttp3.MediaType.parse("application/json"));
 
             Request request = new Request.Builder()
                     .url(enviaConfig.getUrlShip() + "cancel")
@@ -323,7 +320,8 @@ public class EnviaIntegrationService {
                     .trackingNumber(existingLabel.getTrackingNumber())
                     .folio(dataNode.path("folio").asText())
                     .balanceReturned(dataNode.path("balanceReturned").asBoolean())
-                    .balanceReturnedDate(dataNode.path("balanceReturnedDate").asText().isEmpty() ? null : objectMapper.convertValue(dataNode.path("balanceReturnedDate"), LocalDateTime.class))
+                    .balanceReturnedDate(dataNode.path("balanceReturnedDate").asText().isEmpty() ? null
+                            : objectMapper.convertValue(dataNode.path("balanceReturnedDate"), LocalDateTime.class))
                     .build();
 
             EnviaCancelLabel savedCancelLabel = enviaCancelLabelRepository.save(cancelLabel);
@@ -347,14 +345,12 @@ public class EnviaIntegrationService {
         ObjectMapper objectMapper = new ObjectMapper();
 
         EnviaTrackingRequest trackingRequest = new EnviaTrackingRequest(
-                existingLabel.getTrackingNumber()
-        );
+                existingLabel.getTrackingNumber());
 
         try {
             RequestBody requestBody = RequestBody.create(
                     objectMapper.writeValueAsString(trackingRequest),
-                    okhttp3.MediaType.parse("application/json")
-            );
+                    okhttp3.MediaType.parse("application/json"));
 
             Request request = new Request.Builder()
                     .url(enviaConfig.getUrlShip() + "generaltrack")
@@ -379,8 +375,7 @@ public class EnviaIntegrationService {
 
             EnviaTrackingResponse trackingResponse = new EnviaTrackingResponse(
                     dataNode.get(0).path("trackUrl").asText(),
-                    dataNode.get(0).path("trackUrlSite").asText()
-            );
+                    dataNode.get(0).path("trackUrlSite").asText());
 
             return trackingResponse;
 
@@ -396,8 +391,7 @@ public class EnviaIntegrationService {
                 .orElseThrow(() -> {
                     log.warn("EnviaLabel not found for order id: {}", orderId);
                     return new com.portability.addresses_service.exception.ResourceNotFoundException(
-                            "EnviaLabel not found for order id: " + orderId
-                    );
+                            "EnviaLabel not found for order id: " + orderId);
                 });
     }
 

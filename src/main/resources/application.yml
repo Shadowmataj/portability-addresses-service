@@ -1,0 +1,59 @@
+spring:
+  application:
+    name: addresses-service
+  # Database Configuration - PostgreSQL
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+  # JPA/Hibernate Configuration
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc:
+          lob:
+            non_contextual_creation: true
+
+server:
+  port: ${SERVER_PORT:8084}
+
+# Logging Configuration
+logging:
+  level:
+    com.portability.addresses_service: INFO
+    org.springframework.web: INFO
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
+# Eureka Client Configuration
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE}
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+
+# SpringDoc OpenAPI Configuration
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
+    operationsSorter: method
+    tagsSorter: alpha
+
+envia:
+  api:
+    token: ${API_TOKEN}
+    url-address-validation: ${URL_ADDRESS_VALIDATION}
+    url-get-carriers: ${URL_GET_CARRIERS}
+    url-ship: ${URL_SHIP}

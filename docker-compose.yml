@@ -1,0 +1,21 @@
+services:
+  addresses-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: addresses-service
+    ports:
+      - "${SERVER_PORT:-8084}:${SERVER_PORT:-8084}"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - SERVER_PORT=${SERVER_PORT:-8084}
+      - DB_URL=${DB_URL}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - API_TOKEN=${API_TOKEN}
+      - URL_ADDRESS_VALIDATION=${URL_ADDRESS_VALIDATION}
+      - URL_GET_CARRIERS=${URL_GET_CARRIERS}
+      - URL_SHIP=${URL_SHIP}
+    volumes:
+      - ./logs:/app/logs
+    restart: unless-stopped
